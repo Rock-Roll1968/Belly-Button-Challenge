@@ -1,84 +1,97 @@
-// Build the metadata panel
-function buildMetadata(sample) {
-  d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
 
-    // get the metadata field
+let url = "https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json";
 
+const optionChanged = async id => {
+    let { names, metadata, samples } = await d3.json(url);
 
-    // Filter the metadata for the object with the desired sample number
+// mames
+    if(id == undefined) {
+      names.forEach(name => {
+        d3.select("select").append("option").text(name)
+      });
 
+      id = names[0];
+    };
 
-    // Use d3 to select the panel with id of `#sample-metadata`
+// Demographic
+    let meta = metadata.find(obj => obj.id == id);
 
+    d3.select("#sample-metadata").html("");
+    
+    Object.entries(meta).forEach(([key,val]) => {
+      d3.select("#sample-metadata").append("h5").text(`${key.toUpperCase()}: ${val}`);
+    });
 
-    // Use `.html("") to clear any existing metadata
+// Bar chart
+    let { otu_ids, sample_values, otu_labels } = samples.find(obj => obj.id == id);
 
+    let combinedData = otu_ids.map((id, index) => ({
+        id: id,
+        value: sample_values[index],
+        label: otu_labels[index]
+    }));
 
-    // Inside a loop, you will need to use d3 to append new
-    // tags for each key-value in the filtered metadata.
+    combinedData.sort((a, b) => b.value - a.value);
+    combinedData = combinedData.slice(0, 10).reverse();
+    
+    
+    var data = [
+      {
+        x: combinedData.map(d => d.value),
+        y: combinedData.map(d => `OTU ${d.id}`),
+        text: combinedData.map(d => d.label),
+        type: 'bar',
+        orientation: 'h',
+       }];
+    
+    Plotly.newPlot('bar', data);
+};
 
-  });
-}
+// Bubble chart
 
-// function to build both charts
-function buildCharts(sample) {
-  d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+ let samples = [
+    {
+      id: 1,
+      otu_ids: [1167],
+      sample_values: [165],
+      otu_labels: []
+    },
+  ]; 
 
-    // Get the samples field
+ function createBubbleChart(id) {
 
+  let {otu_ids, sample_values, otu_labels } = samples.find(obj => obj.id == id);
+  
 
-    // Filter the samples for the object with the desired sample number
+  var trace = {
+    x: otu_ids,
+    y: sample_values,
+    text: otu_labels,
+    mode: 'markers',
+    marker: {
+      size: sample_values,
+      color: otu_ids,
+      colorscale: 'Earth',
+      opacity: 0.6
+    }
+  };
 
+  var data = [trace];
 
-    // Get the otu_ids, otu_labels, and sample_values
+  var layout = {
+    title: 'Bubble Chart for Each Sample',
+    xaxis: { title: 'OTU ID' },
+    yaxis: { title: 'Sample Value' },
+    showlegend: false,
+    height: 600,
+    width: 1000
+  };
 
+  Plotly.newPlot('bubble', data, layout)
+ }
 
-    // Build a Bubble Chart
+createBubbleChart(1);
 
+let init = optionChanged;
 
-    // Render the Bubble Chart
-
-
-    // For the Bar Chart, map the otu_ids to a list of strings for your yticks
-
-
-    // Build a Bar Chart
-    // Don't forget to slice and reverse the input data appropriately
-
-
-    // Render the Bar Chart
-
-  });
-}
-
-// Function to run on page load
-function init() {
-  d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
-
-    // Get the names field
-
-
-    // Use d3 to select the dropdown with id of `#selDataset`
-
-
-    // Use the list of sample names to populate the select options
-    // Hint: Inside a loop, you will need to use d3 to append a new
-    // option for each sample name.
-
-
-    // Get the first sample from the list
-
-
-    // Build charts and metadata panel with the first sample
-
-  });
-}
-
-// Function for event listener
-function optionChanged(newSample) {
-  // Build charts and metadata panel each time a new sample is selected
-
-}
-
-// Initialize the dashboard
 init();
