@@ -5,7 +5,7 @@
 [website](https://rock-roll1968.github.io/Belly-Button-Challenge/)
 
 ## Description
-Statistical Analysis of Bacterial 
+Statistical Analysis of Human Navel Bacterial Cultures 
 
 ![app_image](Chart.png)
 
