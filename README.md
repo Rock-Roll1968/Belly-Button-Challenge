@@ -2,7 +2,7 @@
 ![MIT](https://img.shields.io/badge/License-MIT-blue)
 
 ## Website: 
-[website](https://github.com/Rock-Roll1968/Belly-Button-Challenge.git)
+[website](https://rock-roll1968.github.io/Belly-Button-Challenge/)
 
 ## Description
 Statistical Analysis of Bacterial 
