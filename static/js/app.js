@@ -41,9 +41,15 @@ const optionChanged = async id => {
         text: combinedData.map(d => d.label),
         type: 'bar',
         orientation: 'h',
-       }];
+      }
+    ];    
+      
+    var layout = {
+        title: 'Top 10 Bacteria Cultures Found',
+        xaxis: {title: 'Number of Bacteria'},
+    };
     
-    Plotly.newPlot('bar', data);
+  Plotly.newPlot('bar', data, layout);
     
 // Bubble chart     
     let trace = {
@@ -61,15 +67,15 @@ const optionChanged = async id => {
 
     let data1 = [trace];
 
-    let layout = {
-      title: 'Bubble Chart',
-      xaxis: { title: 'OTU IDs' },
-      yaxis: { title: 'Sample Values'},
+    let layout1 = {
+      title: 'Bacteria Cultures Per Sample',
+      xaxis: { title: 'OTU ID' },
+      yaxis: { title: 'Number of Bacteria'},
       height: 600,
       width: 1000
     };
 
-    Plotly.newPlot('bubble', data1);
+    Plotly.newPlot('bubble', data1, layout1);
 };
 
 let init = optionChanged;
